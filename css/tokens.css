@@ -1,0 +1,59 @@
+/* Ropon Radar — design tokens. "Field scientist's notebook meets radar instrument." */
+
+@font-face { font-family: "Fraunces"; src: url("../fonts/fraunces-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Fraunces"; src: url("../fonts/fraunces-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Fraunces"; src: url("../fonts/fraunces-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: block; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Noto Sans Bengali"; src: url("../fonts/noto-sans-bengali-bengali-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Noto Sans Bengali"; src: url("../fonts/noto-sans-bengali-bengali-600-normal.woff2") format("woff2"); font-weight: 600; font-display: block; }
+
+:root {
+  /* palette with meaning */
+  --paper: #F4F1EA;        /* notebook page */
+  --paper-deep: #EAE5D9;   /* neutral fills, "on track" */
+  --ink: #1B1B1B;
+  --muted: #5F5F58;        /* 5.7:1 on paper, 5.1:1 on paper-deep (spec #6B6B63 darkened for AA) */
+  --water: #1F5E6E;        /* monsoon water, early */
+  --paddy: #5B7F2B;        /* paddy green (fills) */
+  --paddy-ink: #4A6A21;    /* paddy green for text, 5.6:1 */
+  --silt: #B8893A;         /* silt ochre (fills only) */
+  --silt-ink: #85601F;     /* ochre for text, 4.9:1 */
+  --brick: #A4432F;        /* alert, late */
+  --radar-bg: #0E1A1F;     /* deep ink, radar scene only */
+  --radar-fg: #D8E3E0;
+  --radar-muted: #8FA5A6;
+  --radar-line: #9CD0C9;
+
+  --grid: rgba(27, 27, 27, 0.045);
+  --hair-color: rgba(27, 27, 27, 0.28);
+  --hair: 1px solid var(--hair-color);
+  --rule-soft: rgba(27, 27, 27, 0.12);
+
+  /* type */
+  --font-display: "Fraunces", "Source Serif 4", Georgia, serif;
+  --font-ui: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, monospace;
+  --font-bn: "Noto Sans Bengali", "Nirmala UI", sans-serif;
+
+  --fs-display: 64px;
+  --fs-title: 44px;
+  --fs-h: 28px;
+  --fs-body: 20px;
+  --fs-caption: 20px;
+  --fs-label: 14px;
+  --fs-hero: 76px;
+
+  /* motion */
+  --t-slow: 900ms;
+  --t-mid: 600ms;
+  --t-fast: 400ms;
+  --ease: cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-slow: 0ms; --t-mid: 0ms; --t-fast: 0ms; }
+}

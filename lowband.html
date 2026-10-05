@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ropon Radar — text-only</title>
+<style>
+  /* No web fonts, no images, no chart library: system fonts and tables only. */
+  body { background: #F4F1EA; color: #1B1B1B; font: 16px/1.5 system-ui, "Segoe UI", sans-serif; margin: 0 auto; padding: 20px 16px 60px; max-width: 900px; }
+  h1 { font: 600 26px/1.2 Georgia, serif; margin: 0; }
+  h2 { font: 600 19px/1.3 Georgia, serif; margin: 34px 0 8px; padding-top: 14px; border-top: 1px solid rgba(27,27,27,.28); }
+  .badge { display: inline-block; border: 1px solid #1B1B1B; padding: 4px 10px; font-size: 14px; margin: 10px 0 4px; }
+  .muted { color: #6B6B63; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid rgba(27,27,27,.14); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #6B6B63; }
+  td { font-family: Consolas, "Courier New", monospace; }
+  td:first-child { font-family: inherit; }
+  .scroll { overflow-x: auto; }
+  .sig { color: #A4432F; font-weight: 600; }
+  pre { white-space: pre-wrap; font: 14px/1.5 Consolas, monospace; background: #EAE5D9; padding: 10px 12px; margin: 6px 0; }
+  [lang=bn] { font-family: "Noto Sans Bengali", "Nirmala UI", "Vrinda", sans-serif; font-size: 17px; }
+  a { color: #1F5E6E; }
+</style>
+</head>
+<body>
+<h1>Ropon Radar <span lang="bn">রোপণ</span> — text-only view</h1>
+<div class="badge">Illustrative demo data · real NASA pipeline in progress</div>
+<p class="muted">Same numbers as the visual prototype, computed in your browser from seeded synthetic data. <a href="./">Visual version</a> · <a href="./?mode=explore">Explore</a></p>
+<div id="out">Computing…</div>
+<script type="module">
+import { loadGeo, generate, GAP_BAND, PIXELS } from "./js/data.js";
+import { loadI18n, t, raw, fmtDate, fmtNum, fmtP, smsInfo } from "./js/i18n.js";
+import { trendView, adviceFor } from "./js/scenes.js"; // pure text helpers; no D3 is loaded on this page
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const [geo] = await Promise.all([loadGeo("."), loadI18n(".")]);
+const m = generate(geo);
+const U = m.upazilas;
+const years = U[0].seasons.map((s) => s.year);
+let h = "";
+
+h += `<h2>1 · Usable-rain onset trend, 2001–2025</h2>
+<p class="muted">${t("s4.rule")} Mann-Kendall (tie-corrected), Sen’s slope with 95% CI, Benjamini-Hochberg q = 0.10.</p>
+<div class="scroll"><table><tr><th>Upazila</th><th>Sen, d/decade</th><th>95% CI</th><th>MK S</th><th>p</th><th>BH</th></tr>
+${[...U].sort((a, b) => b.sen.slope - a.sen.slope).map((u) => { const v = trendView(u); return `<tr><td>${esc(u.name)}</td><td>${v.slope}</td><td>${v.ci}</td><td>${u.mk.S}</td><td>${fmtP(u.mk.p).replace("= ", "")}</td><td class="${u.bh.significant ? "sig" : ""}">${u.bh.significant ? "significant" : "—"}</td></tr>`; }).join("")}
+</table></div>`;
+
+h += `<h2>2 · Median radar-detected transplant date</h2>
+<p class="muted">Median over ${PIXELS} synthetic rice pixels per upazila and season (detected / ${PIXELS} in brackets). Sentinel-1 revisit 12 days in 2022–2024, 6 days otherwise.</p>
+<div class="scroll"><table><tr><th>Upazila</th>${years.map((y) => `<th>${y}</th>`).join("")}</tr>
+${U.map((u) => `<tr><td>${esc(u.name)}</td>${u.seasons.map((s) => `<td>${s.transplantDoy === null ? "n/d" : fmtDate(s.year, s.transplantDoy)} <span class="muted">(${s.nDetected})</span></td>`).join("")}</tr>`).join("")}
+</table></div>`;
+
+h += `<h2>3 · Adaptation gap (transplant − onset), days</h2>
+<p class="muted">On track = ${GAP_BAND[0]}–${GAP_BAND[1]} days after onset (assumed seedbed age). ${years.length} seasons — per-year gap shown, no trend claimed.</p>
+<div class="scroll"><table><tr><th>Upazila</th>${years.map((y) => `<th>${y}</th>`).join("")}<th>Median</th><th>Status</th></tr>
+${U.map((u) => `<tr><td>${esc(u.name)}</td>${u.seasons.map((s) => `<td>${s.gap === null ? "n/d" : fmtNum(s.gap, 0)}</td>`).join("")}<td>${fmtNum(u.gapMedian, 0)}</td><td>${u.category}</td></tr>`).join("")}
+</table></div>`;
+
+h += `<h2>4 · Detector test pixels</h2>
+${m.messy.map((x) => { const d = x.det; const r = d.status === "detected" ? (d.ambiguous ? `ambiguous — ${fmtDate(x.year, d.doy)} and ${d.alternates.map((a) => fmtDate(x.year, a.doy)).join(", ")} both pass` : `detected ${fmtDate(x.year, d.doy)} ± ${d.uncertainty} d`) : `not detected — ${esc(d.reason)}`; return `<p><b>${t(`s6.${x.key}`)}:</b> ${r} <span class="muted">(${d.nValid}/${d.nObs} acquisitions valid)</span></p>`; }).join("")}
+<p><b>NISAR 2026, L-band · PROVISIONAL:</b> ${m.nisar.det.status === "detected" ? `detected ${fmtDate(2026, m.nisar.det.doy)} ± ${m.nisar.det.uncertainty} d` : `not detected — ${esc(m.nisar.det.reason)}`}; no data ${fmtDate(2026, m.nisar.gap[0])}–${fmtDate(2026, m.nisar.gap[1])} 2026.</p>`;
+
+h += `<h2>5 · Advisories (SMS)</h2>
+${U.map((u) => { const a = adviceFor(u); const e = smsInfo(a.smsEn); const b = smsInfo(a.smsBn); return `<p><b>${esc(u.name)}</b> · confidence: ${a.conf.level}</p>
+<pre>${esc(a.smsEn)}</pre><p class="muted">${e.encoding}, ${e.units}/160, ${e.segments} SMS</p>
+<pre lang="bn">${esc(a.smsBn)}</pre><p class="muted">${b.encoding}, ${b.units} units, ${b.segments} SMS part${b.segments > 1 ? "s" : ""}</p>`; }).join("")}`;
+
+h += `<h2>6 · Evidence</h2>
+<p>Mode: <b>${m.mode}</b> · seed: mulberry32(${m.seed}) · boundaries: ${esc(geo.upazilas.source)}</p>
+<p>Planned datasets (not used in this demo):</p><ul>${raw("datasets").map(([n, d]) => `<li><b>${esc(n)}</b> — ${esc(d)}</li>`).join("")}</ul>
+<p>Methods: detect.detectOnset · detect.detectTransplant · stats.mannKendall · stats.senSlope · stats.benjaminiHochberg.</p>`;
+
+document.getElementById("out").innerHTML = h;
+</script>
+</body>
+</html>

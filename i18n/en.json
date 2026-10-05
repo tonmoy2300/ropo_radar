@@ -1,0 +1,218 @@
+{
+  "app": "Ropon Radar",
+  "place": "{district} district · Bangladesh",
+  "badge": "Illustrative demo data · real NASA pipeline in progress",
+  "nisarBadge": "NISAR · PROVISIONAL",
+  "months": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  "scenes": {
+    "s1": {
+      "fig": "Fig. 1 — Optical view, July",
+      "title": "Under cloud",
+      "caption": "July. Optical satellites see only cloud."
+    },
+    "s2": {
+      "fig": "Fig. 2 — Sentinel-1 VH backscatter, one paddy pixel, {year}",
+      "title": "Radar sees through",
+      "caption": "Radar sees through cloud. Flooding a paddy makes VH backscatter drop; the growing crop brings it back."
+    },
+    "s3": {
+      "fig": "Fig. 3 — Median transplant date by upazila, 2017–2025",
+      "title": "Where they planted",
+      "caption": "Each upazila’s median transplant date, detected by radar pixel by pixel."
+    },
+    "s4": {
+      "fig": "Fig. 4 — Usable-rain onset, 2001–2025",
+      "title": "The rain moved",
+      "caption": "Usable monsoon rain is arriving later. Trend tested with Mann-Kendall; slope by Sen, with its 95% interval."
+    },
+    "s5": {
+      "fig": "Fig. 5 — Adaptation gap: transplant date − rain onset",
+      "title": "The adaptation gap",
+      "caption": "The adaptation gap: days from usable-rain onset to transplanting. Is planting keeping pace with the rain?"
+    },
+    "s6": {
+      "fig": "Fig. 6 — Field replay: pixel inspector",
+      "title": "Field replay",
+      "caption": "Every detection can be inspected, including pixels where the rule should refuse to answer."
+    },
+    "s7": {
+      "fig": "Fig. 7 — Advisory for {upazila}",
+      "title": "The advice",
+      "caption": "Findings become advice a farmer can act on: in Bangla, by SMS, with an honest confidence label."
+    },
+    "s8": {
+      "fig": "Fig. 8 — Evidence",
+      "title": "Evidence",
+      "caption": "Every number traces back to its data and its method."
+    }
+  },
+  "s1": {
+    "tile": "Optical scene · {district} · July",
+    "cloud": "cloud cover in this tile",
+    "hidden": "{n} upazilas hidden"
+  },
+  "s2": {
+    "flooded": "flooded & transplanted",
+    "grows": "rice grows",
+    "pixel": "one paddy pixel",
+    "detected": "Detected transplant",
+    "pre": "pre-dip median",
+    "drop": "drop",
+    "rise": "sustained rise",
+    "window": "search window 15 Jun – 15 Sep",
+    "missing": "missing acquisition"
+  },
+  "s3": {
+    "detectedOf": "{n}/{total} pixels",
+    "legendEarly": "earlier",
+    "legendLate": "later",
+    "notDetected": "not detected",
+    "listHead": "Median transplant date",
+    "revisit": "Sentinel-1 revisit {d} days",
+    "revisitNote12": "Only Sentinel-1A flying: fewer acquisitions, fewer confident detections."
+  },
+  "s4": {
+    "unit": "days/decade",
+    "ci": "95% CI",
+    "sen": "Sen’s slope",
+    "band": "95% CI",
+    "onset": "usable-rain onset",
+    "falseStart": "false start rejected",
+    "rule": "Onset rule: first day from 1 June with ≥ 20 mm over 3 days and no dry spell > 7 days in the next 30.",
+    "tableHead": [
+      "Upazila",
+      "Sen d/decade",
+      "95% CI",
+      "p",
+      "BH"
+    ],
+    "bhLegend": "significant after Benjamini-Hochberg, q = 0.10",
+    "notSig": "not significant"
+  },
+  "s5": {
+    "early": "planting early",
+    "ontrack": "on track",
+    "late": "planting late",
+    "note": "9 seasons — per-year gap shown, no trend claimed.",
+    "band": "On track = transplanted {a}–{b} days after onset (assumed seedbed age).",
+    "median": "median gap",
+    "days": "days",
+    "stripHead": "{upazila} · gap per season",
+    "nd": "n/d"
+  },
+  "s6": {
+    "tabS1": "Sentinel-1 C-band · {year}",
+    "tabNisar": "2026 · NISAR L-band",
+    "provisional": "PROVISIONAL",
+    "testsHead": "Test pixels: does the detector refuse when it should?",
+    "flood": "Flood, no rice recovery",
+    "double": "Double dip",
+    "sparse": "Heavy missing data",
+    "detected": "detected",
+    "notDetected": "not detected",
+    "ambiguous": "ambiguous: second valid dip {date}",
+    "noData": "No data {from}–{to} 2026",
+    "nisarNote": "L-band HV · thresholds calibrated for C-band VH · season in progress",
+    "today": "today",
+    "uncertain": "± {d} d (revisit gap)"
+  },
+  "s7": {
+    "advisory": "{upazila}: usable monsoon rain now starts {direction}, by about {slope} days per decade since 2001. Prepare seedbeds after the first 20 mm over 3 days; transplant Aman 15–30 days later. Over the last {n} seasons, fields here were transplanted a median {gap} days after onset.",
+    "later": "later",
+    "earlier": "earlier",
+    "sms": "DEMO Ropon Radar {upazila}: monsoon onset {slope} {days}/decade {direction}. Seedbed after 20mm rain in 3 days, transplant 15-30 days later. Confidence: {conf}",
+    "smsHead": "SMS version · English, GSM-7",
+    "smsHeadBn": "SMS version · Bangla, UCS-2",
+    "limitEn": "single SMS = 160 characters",
+    "limitBn": "Bangla: 70 per SMS, 67 per part",
+    "segments": "{n} segments",
+    "conf": {
+      "high": "high",
+      "moderate": "moderate",
+      "low": "low"
+    },
+    "confLabel": "Confidence",
+    "confWhy": {
+      "moderate": "Onset trend significant after BH correction; transplant detected in {n} of {total} seasons. “High” needs ≥ 15 radar seasons.",
+      "low": "Onset trend not significant after BH correction. Advice is general, not local."
+    },
+    "demo": "DEMO · ILLUSTRATIVE DATA",
+    "advisoryFlat": "{upazila}: no clear shift in usable monsoon rain onset since 2001 (trend not significant). Prepare seedbeds after the first 20 mm over 3 days; transplant Aman 15–30 days later. Over the last {n} seasons, fields here were transplanted a median {gap} days after onset.",
+    "smsFlat": "DEMO Ropon Radar {upazila}: no clear shift in monsoon onset. Seedbed after 20mm rain in 3 days, transplant 15-30 days later. Confidence: {conf}"
+  },
+  "s8": {
+    "shown": "The number on screen",
+    "value": "value",
+    "fn": "computed by",
+    "inputs": "inputs",
+    "datasets": "Datasets (planned; not used in this demo)",
+    "mode": "Mode",
+    "modeValue": "synthetic demo — generated in the browser at load",
+    "seed": "Seed",
+    "methods": "Methods",
+    "closing": "NASA sees the rain and the planting.",
+    "closingMeta": "Prototype for NASA Space Apps Challenge 2026 · all figures computed from seeded synthetic data (mulberry32, seed {seed}) · real pipeline in progress."
+  },
+  "datasets": [
+    [
+      "NASA GPM IMERG",
+      "daily rainfall 2001–2025 → usable-rain onset"
+    ],
+    [
+      "NASA POWER",
+      "rainfall cross-check, agro-climate context"
+    ],
+    [
+      "Sentinel-1 GRD (C-band VH)",
+      "transplant detection 2017–2025"
+    ],
+    [
+      "NISAR GCOV (L-band)",
+      "2026 season, provisional"
+    ],
+    [
+      "OPERA DSWx-S1",
+      "surface-water extent to split flood from paddy"
+    ]
+  ],
+  "methods": [
+    [
+      "Onset rule",
+      "detect.js · detectOnset()"
+    ],
+    [
+      "Transplant detection",
+      "detect.js · detectTransplant()"
+    ],
+    [
+      "Mann-Kendall (tie-corrected)",
+      "stats.js · mannKendall()"
+    ],
+    [
+      "Sen’s slope + 95% CI",
+      "stats.js · senSlope()"
+    ],
+    [
+      "Benjamini-Hochberg, q = 0.10",
+      "stats.js · benjaminiHochberg()"
+    ],
+    [
+      "Adaptation gap",
+      "transplant DOY − onset DOY"
+    ]
+  ],
+  "keys": "→ next · ← back · C captions · H hide UI · ↑↓ upazila · E explore"
+}
